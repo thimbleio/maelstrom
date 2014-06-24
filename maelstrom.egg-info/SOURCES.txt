@@ -1,0 +1,7 @@
+setup.py
+maelstrom/__init__.py
+maelstrom.egg-info/PKG-INFO
+maelstrom.egg-info/SOURCES.txt
+maelstrom.egg-info/dependency_links.txt
+maelstrom.egg-info/requires.txt
+maelstrom.egg-info/top_level.txt
