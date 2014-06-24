@@ -101,7 +101,8 @@ def drop_column_family(cf_name):
 def get_row_by_id(cf_name, row_id):
     query = SimpleStatement('select * from '+cf_name+' where id = %s',
                             consistency_level=ConsistencyLevel.QUORUM)
-    try:
+    try: 
+        print 'select * from '+cf_name+' where id =', row_id
         return c.session.execute(query, [row_id])[0]
     except InvalidRequest:
         raise NoSuchColumnFamilyException(cf_name)

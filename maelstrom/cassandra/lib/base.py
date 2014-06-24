@@ -100,6 +100,7 @@ class Base(Row):
                     #to_search[search_string] = Search(string=search_string, model_type=self.__tablename__, model_id=self.id)
                     #to_search[search_string] = Search(id=search_string, model_type=self.__tablename__, model_ids=set([self.id]))
                 #print to_search
+            print to_search
             Search.multi_update_data(to_search)
 
         self._commit()

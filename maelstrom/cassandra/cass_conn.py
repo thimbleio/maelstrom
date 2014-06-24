@@ -3,7 +3,6 @@ from cassandra.decoder import dict_factory
 import cassandra
 
 CASSANDRA_KEYSPACE = 'gradfly'
-CASSANDRA_IP = ['192.241.181.163', '107.170.88.98']
 
 class CassandraConnection(object):
 
