@@ -13,16 +13,15 @@ from datetime import date, datetime
 from uuid import UUID
 from collections import OrderedDict
 from decimal import Decimal
-from cassandra import ConsistencyLevel
-import cassandra
+from cassandra import ConsistencyLevel, InvalidRequest
 from cassandra.query import SimpleStatement
 from itertools import izip
 from time import time
-
+from maelstrom.cassandra.exceptions import NoSuchIndexException, NoSuchColumnFamilyException
 from cass_conn import CassandraConnection
-CASSANDRA_KEYSPACE = "gradfly"
 
 
+cass_keyspace = 'gradfly'
 c = None
 
 
@@ -76,7 +75,7 @@ def to_epoch(d_time):
 
 def create_column_family(cf_name, **kwargs):
     type_map = get_type_map()
-    build = "create table "+CASSANDRA_KEYSPACE+"."+cf_name+" ( "
+    build = "create table "+cass_keyspace+"."+cf_name+" ( "
     build += "id uuid PRIMARY KEY, "
     for k, v in kwargs.iteritems():
         if k == "id":
@@ -96,7 +95,7 @@ def create_column_family(cf_name, **kwargs):
 
 
 def drop_column_family(cf_name):
-    c.session.execute('drop table '+CASSANDRA_KEYSPACE+"."+cf_name)
+    c.session.execute('drop table '+cass_keyspace+"."+cf_name)
 
 
 def get_row_by_id(cf_name, row_id):
@@ -104,10 +103,10 @@ def get_row_by_id(cf_name, row_id):
                             consistency_level=ConsistencyLevel.QUORUM)
     try:
         return c.session.execute(query, [row_id])[0]
-    except cassandra.InvalidRequest:
-        print "ColumnFamilyError: no such column family exists."
+    except InvalidRequest:
+        raise NoSuchColumnFamilyException(cf_name)
     except IndexError:
-        print "IndexError: no such key "+str(row_id)+" exists in Cassandra."
+        raise NoSuchIndexException(row_id)
 
 
 def get_rows_by_id(cf_name, row_ids):
@@ -118,10 +117,10 @@ def get_rows_by_id(cf_name, row_ids):
     try:
         return c.session.execute(
             SimpleStatement(query, consistency_level=ConsistencyLevel.QUORUM))
-    except cassandra.InvalidRequest:
-        print "ColumnFamilyError: no such column family exists."
+    except InvalidRequest:
+        raise NoSuchColumnFamilyException(cf_name)
     except IndexError:
-        print "IndexError: no such key "+str(row_id)+" exists in Cassandra."
+        raise NoSuchIndexException(row_ids)
 
 
 def build_insert_query(cf_name, unique_id, **kwargs):
@@ -154,8 +153,13 @@ def insert_row_data(cf_name, unique_id, **kwargs):
     try:
         return c.session.execute(
             SimpleStatement(query, consistency_level=ConsistencyLevel.QUORUM))
-    except cassandra.InvalidRequest:
+    except InvalidRequest:
         print "ColumnFamilyError: no such column family exists."
+    try:
+        return c.session.execute(
+            SimpleStatement(query, consistency_level=ConsistencyLevel.QUORUM))
+    except InvalidRequest:
+        raise NoSuchColumnFamilyException(cf_name)
 
 
 def set_rows_data(cf_name, unique_ids, list_of_rows):
@@ -169,8 +173,8 @@ def set_rows_data(cf_name, unique_ids, list_of_rows):
         c.session.execute(
             SimpleStatement(batch, consistency_level=ConsistencyLevel.QUORUM)
         )
-    except cassandra.InvalidRequest:
-        print "ColumnFamilyError: no such column family exists."
+    except InvalidRequest:
+        raise NoSuchColumnFamilyException(cf_name)
 
 
 def get_row_spec_prop(cf_name, unique_id, cols):
@@ -182,37 +186,35 @@ def get_row_spec_prop(cf_name, unique_id, cols):
         return c.session.execute(
             SimpleStatement(query, consistency_level=ConsistencyLevel.QUORUM))[
             0]
-    except cassandra.InvalidRequest:
-        print "ColumnFamilyError: no such column family exists."
+    except InvalidRequest:
+        raise NoSuchColumnFamilyException(cf_name)
     except IndexError:
-        print "IndexError: no such key "+str(row_id)+" exists in Cassandra."
+        raise NoSuchIndexException(unique_id)
 
 
+def delete_row(cf_name, unique_id):
+    query = "delete from "+cf_name+" where id="+str(unique_id)
+    try:
+        c.session.execute(
+            SimpleStatement(query, consistency_level=ConsistencyLevel.QUORUM)
+        )
+    except InvalidRequest:
+        raise NoSuchColumnFamilyException(cf_name)
+    except IndexError:
+        raise NoSuchIndexException(unique_id)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+def delete_rows(cf_name, unique_ids):
+    batch = "begin batch "
+    for id in unique_ids:
+        batch += "delete from "+cf_name+" where id="+str(id)+" "
+    batch += "apply batch"
+    try:
+        c.session.execute(
+            SimpleStatement(batch, consistency_level=ConsistencyLevel.QUORUM)
+        )
+    except InvalidRequest:
+        raise NoSuchColumnFamilyException(cf_name)
+    except IndexError:
+        raise NoSuchIndexException(unique_ids)
 

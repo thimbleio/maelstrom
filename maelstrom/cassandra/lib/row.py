@@ -1,5 +1,5 @@
 from datetime import datetime
-import db_utils as db
+import maelstrom.cassandra.lib.db_utils as db
 
 
 class Row(object):
@@ -11,7 +11,8 @@ class Row(object):
     _set_rows = staticmethod(db.set_rows_data)
     _build = staticmethod(db.create_column_family)
     _drop = staticmethod(db.drop_column_family)
-
+    _delete = staticmethod(db.delete_row)
+    _multi_delete = staticmethod(db.delete_rows)
     id = ''
     __tablename__ = ''
     defaults = {}

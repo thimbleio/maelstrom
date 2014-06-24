@@ -3,9 +3,9 @@ __author__ = 'joe'
 import unittest
 from uuid import uuid4
 
-import db_utils as db
-from data import Data
-
+from maelstrom.cassandra.lib import db_utils as db
+from maelstrom.cassandra.lib.data import Data
+from maelstrom.cassandra.exceptions import NoSuchIndexException
 
 class DBUnitTests(unittest.TestCase):
     """
@@ -16,10 +16,12 @@ class DBUnitTests(unittest.TestCase):
     """
 
     def setUp(self):
+        self.ids_used = []
         db.connect()
 
     def test_get_and_put_by_id(self):
         init_id = uuid4()
+        self.ids_used.append(init_id)
         data = Data(id=init_id, contents="john ")
         data.commit()
         test_data = Data.get_by_id(init_id)
@@ -29,6 +31,7 @@ class DBUnitTests(unittest.TestCase):
 
     def test_batch_and_get(self):
         ids = [uuid4(), uuid4(), uuid4()]
+        self.ids_used += list(ids)
         names = ['bob', 'joe', 'sara']
         datum = [Data(id=i, contents=name) for i, name in zip(ids, names)]
         datum = {a.id: a for a in datum}
@@ -51,6 +54,7 @@ class DBUnitTests(unittest.TestCase):
 
     def test_batch_vs_iter_single(self):
         ids = [uuid4(), uuid4(), uuid4()]
+        self.ids_used += list(ids)
         names = ['bob', 'joe', 'sara']
         datum = [Data(id=i, contents=name) for i, name in zip(ids, names)]
         datum = {a.id: a for a in datum}
@@ -67,6 +71,23 @@ class DBUnitTests(unittest.TestCase):
         print datum_batch
         self.assertTrue(datum_batch == datum_single)
 
+
+    def test_delete(self):
+        init_id = uuid4()
+        self.ids_used.append(init_id)
+        data = Data(id = init_id, contents = "testtesttest")
+        data.commit()
+        data.delete(init_id)
+        try:
+            Data.get_by_id(init_id)
+        except Exception as e:
+            if type(e) is NoSuchIndexException:
+                self.assertTrue(True)
+            else:
+                self.assertTrue(False)
+
+
     def tearDown(self):
+        Data.multi_delete(self.ids_used)
         db.close()
 
