@@ -1,6 +1,5 @@
 ===========
-Maelstrom .. image:: https://travis-ci.org/gradfly/maelstrom.svg?branch=develop
-    :target: https://travis-ci.org/gradfly/maelstrom
+Maelstrom .. image:: https://travis-ci.org/gradfly/maelstrom.svg?branch=develop:target: https://travis-ci.org/gradfly/maelstrom
 ===========
 
 Towel Stuff provides such and such and so and so. You might find
