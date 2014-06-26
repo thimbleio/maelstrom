@@ -55,3 +55,4 @@ target/
 .DS_Store
 .idea*
 /.vagrant
+*.py.swp
