@@ -21,13 +21,13 @@ from maelstrom.cassandra.exceptions import NoSuchIndexException, NoSuchColumnFam
 from cass_conn import CassandraConnection
 
 
-cass_keyspace = 'gradfly'
 c = None
+cass_keyspace = None
 
-
-def connect():
-    global c
-    c = CassandraConnection()
+def connect(cass_ip, cass_kp):
+    global c, cass_keyspace
+    cass_keyspace = cass_kp
+    c = CassandraConnection(cass_ip, cass_kp)
 
 
 def close():

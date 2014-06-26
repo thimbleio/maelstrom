@@ -3,11 +3,12 @@ from maelstrom.cassandra.lib.search import Search
 from maelstrom.cassandra.lib.account import Account
 from maelstrom.cassandra.lib import db_utils as db
 from uuid import uuid4
+import maelstrom.cassandra as c
 
 class SearchUnitTests(unittest.TestCase):
 
     def setUp(self):
-        db.connect()
+        c.start(['192.241.181.163', '107.170.88.98'], 'gradfly')
         self.init_id = uuid4()
         self.account = Account(id=self.init_id, name='Matt Morse',
                                         username='matt',
@@ -50,4 +51,4 @@ class SearchUnitTests(unittest.TestCase):
         self.assertTrue(username_is_subset and email_is_subset)
 
     def tearDown(self):
-        db.close()
+        c.stop()

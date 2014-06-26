@@ -6,6 +6,7 @@ from uuid import uuid4
 from maelstrom.cassandra.lib import db_utils as db
 from maelstrom.cassandra.lib.data import Data
 from maelstrom.cassandra.exceptions import NoSuchIndexException
+import maelstrom.cassandra as c
 
 class DBUnitTests(unittest.TestCase):
     """
@@ -17,7 +18,7 @@ class DBUnitTests(unittest.TestCase):
 
     def setUp(self):
         self.ids_used = []
-        db.connect()
+        c.start(['192.241.181.163', '107.170.88.98'], 'gradfly')
 
     def test_get_and_put_by_id(self):
         init_id = uuid4()
@@ -89,5 +90,5 @@ class DBUnitTests(unittest.TestCase):
 
     def tearDown(self):
         Data.multi_delete(self.ids_used)
-        db.close()
+        c.stop()
 
