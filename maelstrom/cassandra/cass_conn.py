@@ -8,7 +8,7 @@ class CassandraConnection(object):
 
     def __init__(self):
         try:
-            self.cluster = Cluster(contact_points=CASSANDRA_IP)#, control_connection_timeout=10000.0)
+            self.cluster = Cluster(contact_points=CASSANDRA_IP, control_connection_timeout=10000.0)
             self.session = self.cluster.connect(CASSANDRA_KEYSPACE)
             self.session.row_factory = dict_factory
             #self.session.default_timeout = 60.0
