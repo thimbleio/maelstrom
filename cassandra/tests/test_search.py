@@ -1,9 +1,9 @@
 import unittest
-from maelstrom.cassandra.lib.search import Search
-from maelstrom.cassandra.lib.account import Account
-from maelstrom.cassandra.lib import db_utils as db
 from uuid import uuid4
-import maelstrom.cassandra as c
+from cassandra.search import Search
+from cassandra.account import Account
+import cassandra as c
+
 
 class SearchUnitTests(unittest.TestCase):
 

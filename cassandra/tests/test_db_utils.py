@@ -2,11 +2,10 @@ __author__ = 'joe'
 
 import unittest
 from uuid import uuid4
+from cassandra.data import Data
+from cassandra.exceptions import NoSuchIndexException
+import cassandra as c
 
-from maelstrom.cassandra.lib import db_utils as db
-from maelstrom.cassandra.lib.data import Data
-from maelstrom.cassandra.exceptions import NoSuchIndexException
-import maelstrom.cassandra as c
 
 class DBUnitTests(unittest.TestCase):
     """
@@ -76,7 +75,7 @@ class DBUnitTests(unittest.TestCase):
     def test_delete(self):
         init_id = uuid4()
         self.ids_used.append(init_id)
-        data = Data(id = init_id, contents = "testtesttest")
+        data = Data(id=init_id, contents="testtesttest")
         data.commit()
         data.delete(init_id)
         try:
