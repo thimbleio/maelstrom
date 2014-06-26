@@ -1,0 +1,2 @@
+include CHANGES.rst LICENSE AUTHORS
+recursive-include docs *
