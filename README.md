@@ -1,9 +1,6 @@
 ===========
-Maelstrom
+Maelstrom [![Build Status](https://travis-ci.org/gradfly/maelstrom.svg?branch=develop)](https://travis-ci.org/gradfly/maelstrom)
 ===========
-
-.. image:: https://travis-ci.org/gradfly/maelstrom.svg?branch=develop
-    :target: https://travis-ci.org/gradfly/maelstrom
 
 Towel Stuff provides such and such and so and so. You might find
 it most useful for tasks involving <x> and also <y>. Typical usage
