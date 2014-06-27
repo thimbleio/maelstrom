@@ -6,6 +6,7 @@ import cassandra_module as c
 
 
 class SearchUnitTests(unittest.TestCase):
+
     def setUp(self):
         c.start(['192.241.181.163', '107.170.88.98'], 'gradfly')
         self.init_id = uuid4()

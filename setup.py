@@ -10,5 +10,6 @@ setup(name='py-maelstrom',
       description='A powerful, model based Cassandra wrapper for Python.',
       long_description=open('README.rst').read(),
       install_requires=[
-          "cassandra-driver == 2.0.2"
-      ])
+          "cassandra-driver == 1.0.2"
+      ],
+      test_suite="cassandra_module.tests.run_suite")

@@ -1,11 +1,8 @@
-__author__ = 'joe'
-
 import unittest
 from uuid import uuid4
 from cassandra_module.data import Data
-from cassandra.exceptions import NoSuchIndexException
+from cassandra_module.exceptions import NoSuchIndexException
 import cassandra_module as c
-
 
 class DBUnitTests(unittest.TestCase):
     """
@@ -85,7 +82,6 @@ class DBUnitTests(unittest.TestCase):
                 self.assertTrue(True)
             else:
                 self.assertTrue(False)
-
 
     def tearDown(self):
         Data.multi_delete(self.ids_used)
