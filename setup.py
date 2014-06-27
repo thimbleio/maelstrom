@@ -8,7 +8,7 @@ setup(name='py-maelstrom',
       url='https://github.com/gradfly/maelstrom',
       license='LICENSE',
       description='A powerful, model based Cassandra wrapper for Python.',
-      long_description=open('README.rst').read(),
+      long_description=open('README.md').read(),
       install_requires=[
           "cassandra-driver == 2.0.2",
           "nose >= 1.3.1"
