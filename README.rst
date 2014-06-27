@@ -17,6 +17,7 @@ Get Started
 Example usage of Maelstrom:
 
 .. code-block:: python
+
     from uuid import uuid4
     from maelstrom import connect, close, Base
     
