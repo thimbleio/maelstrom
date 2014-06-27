@@ -1,21 +1,32 @@
-import unittest
 from uuid import uuid4
 from cassandra_module.data import Data
 from cassandra_module.exceptions import NoSuchIndexException
-import cassandra_module as c
+from test import CassandraTestCase
 
-class DBUnitTests(unittest.TestCase):
+
+class DBUnitTests(CassandraTestCase):
     """
     The Data class is the generic protoype for the database models. As such,
     correct testing database functionality on it will test database
     transactions, while other model-specific tests should be written
     in a separate testing class.
     """
+    test_setup = False
 
     def setUp(self):
         self.ids_used = []
-        c.start(['192.241.181.163', '107.170.88.98'], 'gradfly')
-
+        CassandraTestCase.setUp(self, ['192.241.181.163', '107.170.88.98'], 'gradfly')
+        #c.start(['192.241.181.163', '107.170.88.98'], 'gradfly')
+        '''
+        try:
+            c.start(['192.241.181.163', '107.170.88.98'], 'gradfly')
+        except Exception:
+            from time import sleep
+            print 'failed'
+            sleep(50000)
+        finally:
+            c.start(['192.241.181.163', '107.170.88.98'], 'gradfly')
+        '''
     def test_get_and_put_by_id(self):
         init_id = uuid4()
         self.ids_used.append(init_id)
@@ -84,5 +95,6 @@ class DBUnitTests(unittest.TestCase):
 
     def tearDown(self):
         Data.multi_delete(self.ids_used)
-        c.stop()
+        CassandraTestCase.tearDown(self)
+        #c.stop()
 

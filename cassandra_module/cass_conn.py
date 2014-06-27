@@ -1,3 +1,4 @@
+from multiprocessing import cpu_count
 from cassandra.cluster import Cluster, NoHostAvailable
 from cassandra.decoder import dict_factory
 
@@ -11,8 +12,10 @@ class CassandraConnection(object):
         self.ip = cass_ip
         self.kp = cass_kp
         try:
-            self.cluster = Cluster(self.ip)
-            self.session = self.cluster.connect(self.kp)
+            #self.cluster = Cluster(contact_points=self.ip, control_connection_timeout=10000.0)
+            self.cluster = Cluster(contact_points=self.ip)
+            #self.session = self.cluster.connect(self.kp)
+            self.session = TransactionManager(self)
             self.session.row_factory = dict_factory
         except NoHostAvailable:
             print "TimeoutError: Possibly a connection issue."
@@ -25,5 +28,23 @@ class CassandraConnection(object):
 
 
 class TransactionManager:
-    def __init__(self):
-        pass
+    sessions = [] 
+    
+    def __init__(self, connector):
+        self.connector = connector
+        for i in range(cpu_count() - 1):
+            session = self.connector.cluster.connect(self.connector.kp)
+            session.row_factory = dict_factory
+            self.sessions.append(session)
+        print self.sessions
+    
+
+    def execute(self, *args, **kwargs):
+        current_session = self.sessions.pop(0)
+        result = current_session.execute_async(*args, **kwargs)
+        self.sessions.append(current_session)
+        return result
+
+    def shutdown(self):
+        for session in self.sessions:
+            session.shutdown()
