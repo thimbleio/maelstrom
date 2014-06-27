@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='py-maelstrom',
-      version='0.2.0',
+      version='0.2.1',
       author='Matt Morse, Joe Peacock',
       author_email='mmorse1217@gmail.com, joeapeacock@gmail.com',
       packages=['cassandra_module', 'cassandra_module.tests'],
