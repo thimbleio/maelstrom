@@ -68,7 +68,6 @@ class DBUnitTests(unittest.TestCase):
         print datum_batch
         self.assertTrue(datum_batch == datum_single)
 
-
     def test_delete(self):
         init_id = uuid4()
         self.ids_used.append(init_id)

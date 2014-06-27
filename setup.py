@@ -12,4 +12,4 @@ setup(name='py-maelstrom',
       install_requires=[
           "cassandra-driver == 1.0.2"
       ],
-      test_suite="cassandra_module.tests.run_suite")
+      test_suite="cassandra_module.tests")
