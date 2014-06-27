@@ -1,14 +1,14 @@
 from setuptools import setup
 
-setup(name='py-maelstrom',
-      version='0.2.1',
+setup(name='maelstrom',
+      version='0.3.0',
       author='Matt Morse, Joe Peacock',
       author_email='mmorse1217@gmail.com, joeapeacock@gmail.com',
-      packages=['cassandra_module', 'cassandra_module.tests'],
+      packages=['maelstrom', 'maelstrom.tests'],
       url='https://github.com/gradfly/maelstrom',
       license='LICENSE',
       description='A powerful, model based Cassandra wrapper for Python.',
-      long_description=open('README.md').read(),
+      long_description=open('README.rst').read(),
       install_requires=[
           "cassandra-driver == 2.0.2",
           "nose >= 1.3.1"

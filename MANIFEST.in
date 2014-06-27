@@ -1,2 +1,2 @@
-include CHANGES.md LICENSE AUTHORS README.md
+include CHANGES.md LICENSE AUTHORS README.rst
 recursive-include docs *
