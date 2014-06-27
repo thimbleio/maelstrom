@@ -1,6 +1,6 @@
 from setuptools import setup
 
-setup(name='maelstrom',
+setup(name='maelstromp',
       version='0.3.0',
       author='Matt Morse, Joe Peacock',
       author_email='mmorse1217@gmail.com, joeapeacock@gmail.com',
