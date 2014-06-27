@@ -7,7 +7,7 @@ Installing through pip is recommended:
 ```bash
 $ pip install py-maelstrom
 ```
-To install the package manually please refer to our installation guide. 
+You must have setuptools installed prior to installation. To install the package manually please refer to our installation guide. 
 
 ## Get Started
 Example usage of Maelstrom:
