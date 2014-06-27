@@ -11,6 +11,7 @@ setup(name='maelstromp',
       long_description=open('README.rst').read(),
       install_requires=[
           "cassandra-driver == 2.0.2",
-          "nose >= 1.3.1"
+          "nose >= 1.3.1",
+          "rednose"
       ],
       test_suite="nose.collector")
