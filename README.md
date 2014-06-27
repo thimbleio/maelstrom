@@ -1,10 +1,6 @@
-===========
-Maelstrom [![Build Status](https://travis-ci.org/gradfly/maelstrom.svg?branch=develop)](https://travis-ci.org/gradfly/maelstrom)
-===========
+# Maelstrom [![Build Status](https://travis-ci.org/gradfly/maelstrom.svg?branch=develop)](https://travis-ci.org/gradfly/maelstrom)
 
-Towel Stuff provides such and such and so and so. You might find
-it most useful for tasks involving <x> and also <y>. Typical usage
-often looks like this::
+A model based database library for Apache Cassandra built on top of DataStax Python Driver. This library has tested support for Python 2.7.
 
     #!/usr/bin/env python
 
