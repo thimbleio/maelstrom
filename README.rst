@@ -6,7 +6,8 @@ A model based database library for Apache Cassandra built on top of DataStax Pyt
 
 Installation
 ------------
-Installing through pip is recommended::
+Installing through pip is recommended:
+::
 
     $ pip install maelstrom-py
 
@@ -19,9 +20,10 @@ Example usage of Maelstrom:
 .. code-block:: python
 
     from uuid import uuid4
-    from maelstrom import connect, close, Base
+    import maelstrom
+    from malestrom.base import Base
     
-    cassandra.connect([ip1, ip2])
+    maelstrom.connect([ip1, ip2])
     
     class User(Base):
     
@@ -44,8 +46,7 @@ Example usage of Maelstrom:
     
     get_user = Account.get_by_lookup("example@email.com")
     
-    cassandra.close()
-
+    maelstrom.close()
 
 Documentation
 -------------
@@ -55,4 +56,4 @@ License
 -------
 Copyright 2014 Matt Morse, Joe Peacock and contributors
 
-Maelstrom is licensed under the [MIT License](https://github.com/gradfly/maelstrom/README.rst). 
+Maelstrom is licensed under the `MIT License <https://github.com/gradfly/maelstrom/README.rst/>`_. 
