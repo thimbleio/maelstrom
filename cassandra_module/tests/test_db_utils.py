@@ -90,7 +90,6 @@ class DBUnitTests(CassandraTestCase):
         else:
             self.assertTrue(False)
 
-
     def tearDown(self):
         Data.multi_delete(self.ids_used)
         CassandraTestCase.tearDown(self)

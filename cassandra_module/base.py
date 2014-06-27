@@ -1,5 +1,5 @@
 from row import Row
-from maelstrom.cassandra.exceptions import NoSuchIndexException
+from exceptions import NoSuchIndexException
 
 
 class Base(Row):
