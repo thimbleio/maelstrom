@@ -92,13 +92,11 @@ class DBUnitTests(CassandraTestCase):
         data = Data(id = init_id, contents = "testtesttest")
         data.commit()
         data.delete(init_id)
-        try:
-            Data.get_by_id(init_id)
-        except Exception as e:
-            if type(e) is NoSuchIndexException:
-                self.assertTrue(True)
-            else:
-                self.assertTrue(False)
+        if not Data.get_by_id(init_id):
+            self.assertTrue(True)
+        else:
+            self.assertTrue(False)
+
 
     def tearDown(self):
         Data.multi_delete(self.ids_used)

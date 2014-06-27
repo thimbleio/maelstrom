@@ -1,4 +1,5 @@
 from row import Row
+from maelstrom.cassandra.exceptions import NoSuchIndexException
 
 
 class Base(Row):
@@ -26,13 +27,22 @@ class Base(Row):
     @classmethod
     def get_by_lookup(cls, string):
         from gf.lib.db.lookup import LookUp
+        base = None
+        try:
+            base = LookUp.get_by_id(string)            
+        except NoSuchIndexException:
+            return None
 
-        user_id = LookUp.get_by_id(string).model_id
-        return cls.get_by_id(user_id)
+        unique_id = base.model_id
+        return cls.get_by_id(unique_id)
 
     @classmethod
     def get_by_id(cls, req_id):
-        data = cls._get_row_by_id(cls.__tablename__, req_id)
+        data = None
+        try:
+            data = cls._get_row_by_id(cls.__tablename__, req_id)
+        except NoSuchIndexException:
+            return None
         return cls(**data)
 
     @classmethod

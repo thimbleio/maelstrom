@@ -13,6 +13,7 @@ class Row(object):
     _drop = staticmethod(db.drop_column_family)
     _delete = staticmethod(db.delete_row)
     _multi_delete = staticmethod(db.delete_rows)
+    
     id = ''
     __tablename__ = ''
     defaults = {}
