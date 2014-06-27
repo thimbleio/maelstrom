@@ -13,6 +13,7 @@ from datetime import date, datetime
 from uuid import UUID
 from collections import OrderedDict
 from decimal import Decimal
+from cassandra import InvalidRequest, ConsistencyLevel
 import cassandra
 from cassandra.query import SimpleStatement
 from itertools import izip
