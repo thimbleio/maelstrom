@@ -103,7 +103,7 @@ def get_row_by_id(cf_name, row_id):
                             consistency_level=ConsistencyLevel.QUORUM)
     try: 
         print 'select * from '+cf_name+' where id =', row_id
-        return c.session.execute(query, [row_id])[0]
+        return c.session.execute(query, [row_id]).result()[0]
     except InvalidRequest:
         raise NoSuchColumnFamilyException(cf_name)
     except IndexError:
@@ -117,7 +117,7 @@ def get_rows_by_id(cf_name, row_ids):
     query = query[:-1]+")"
     try:
         return c.session.execute(
-            SimpleStatement(query, consistency_level=ConsistencyLevel.QUORUM))
+            SimpleStatement(query, consistency_level=ConsistencyLevel.QUORUM)).result()
     except InvalidRequest:
         raise NoSuchColumnFamilyException(cf_name)
     except IndexError:
@@ -153,12 +153,9 @@ def insert_row_data(cf_name, unique_id, **kwargs):
     query = build_insert_query(cf_name, unique_id, **kwargs)
     try:
         return c.session.execute(
-            SimpleStatement(query, consistency_level=ConsistencyLevel.QUORUM))
+            SimpleStatement(query, consistency_level=ConsistencyLevel.QUORUM)).result()
     except InvalidRequest:
         print "ColumnFamilyError: no such column family exists."
-    try:
-        return c.session.execute(
-            SimpleStatement(query, consistency_level=ConsistencyLevel.QUORUM))
     except InvalidRequest:
         raise NoSuchColumnFamilyException(cf_name)
 
@@ -173,7 +170,7 @@ def set_rows_data(cf_name, unique_ids, list_of_rows):
     try:
         c.session.execute(
             SimpleStatement(batch, consistency_level=ConsistencyLevel.QUORUM)
-        )
+        ).result()
     except InvalidRequest:
         raise NoSuchColumnFamilyException(cf_name)
 

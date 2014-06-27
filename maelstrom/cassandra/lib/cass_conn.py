@@ -1,6 +1,7 @@
 from cassandra.cluster import Cluster
 from cassandra.decoder import dict_factory
 import cassandra
+from multiprocessing import cpu_count
 
 class CassandraConnection(object):
     ip = None
@@ -11,8 +12,9 @@ class CassandraConnection(object):
         self.kp = cass_kp
         try:
             #self.cluster = Cluster(contact_points=self.ip, control_connection_timeout=10000.0)
-            self.cluster = Cluster(self.ip)
-            self.session = self.cluster.connect(self.kp)
+            self.cluster = Cluster(contact_points=self.ip)
+            #self.session = self.cluster.connect(self.kp)
+            self.session = TransactionManager(self)
             self.session.row_factory = dict_factory
             #self.session.default_timeout = 60.0
         except cassandra.cluster.NoHostAvailable:
@@ -25,6 +27,26 @@ class CassandraConnection(object):
         self.session.shutdown()
 
 class TransactionManager:
+    sessions = [] 
+    
+    def __init__(self, connector):
+        self.connector = connector
+        for i in range(cpu_count() - 1):
+            session = self.connector.cluster.connect(self.connector.kp)
+            session.row_factory = dict_factory
+            self.sessions.append(session)
+        print self.sessions
+    
 
-    def __init__(self):
-        pass
+    def execute(self, *args, **kwargs):
+        current_session = self.sessions.pop(0)
+        result = current_session.execute_async(*args, **kwargs)
+        self.sessions.append(current_session)
+        return result
+
+    def shutdown(self):
+        for session in self.sessions:
+            session.shutdown()
+
+
+

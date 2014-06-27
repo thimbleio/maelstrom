@@ -4,11 +4,25 @@ from maelstrom.cassandra.lib.account import Account
 from maelstrom.cassandra.lib import db_utils as db
 from uuid import uuid4
 import maelstrom.cassandra as c
+from maelstrom.cassandra.tests.test import CassandraTestCase
 
-class SearchUnitTests(unittest.TestCase):
+class SearchUnitTests(CassandraTestCase):
+
+    test_setup = False
 
     def setUp(self):
-        c.start(['192.241.181.163', '107.170.88.98'], 'gradfly')
+        CassandraTestCase.setUp(self, ['192.241.181.163', '107.170.88.98'], 'gradfly')
+        #c.start(['192.241.181.163', '107.170.88.98'], 'gradfly')
+        '''
+        try:
+            c.start(['192.241.181.163', '107.170.88.98'], 'gradfly')
+        except Exception:
+            from time import sleep
+            print 'failed :('
+            sleep(50000)
+        finally:
+            c.start(['192.241.181.163', '107.170.88.98'], 'gradfly')
+        '''
         self.init_id = uuid4()
         self.account = Account(id=self.init_id, name='Matt Morse',
                                         username='matt',
@@ -36,10 +50,14 @@ class SearchUnitTests(unittest.TestCase):
 
     def test_search_username_substr(self):
         search = Search.get_by_id("ma")
+        print self.account.id
+        print search.model_ids
         self.assertTrue(self.account.id in search.model_ids)
 
     def test_search_email_substr(self):
         search = Search.get_by_id("matt@g")
+        print self.account.id
+        print search.model_ids
         self.assertTrue(self.account.id in search.model_ids)
 
     def test_search_refined(self):
@@ -51,4 +69,5 @@ class SearchUnitTests(unittest.TestCase):
         self.assertTrue(username_is_subset and email_is_subset)
 
     def tearDown(self):
-        c.stop()
+        CassandraTestCase.tearDown(self)
+        #c.stop()
