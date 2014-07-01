@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='maelstrom-py',
-      version='0.1.3',
+      version='0.1.31',
       author='Matt Morse, Joe Peacock',
       author_email='mmorse1217@gmail.com, joeapeacock@gmail.com',
       packages=['maelstrom', 'maelstrom.tests'],

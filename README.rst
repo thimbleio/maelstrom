@@ -25,7 +25,7 @@ Example usage of Maelstrom:
     from maelstrom.base import Base
 	  from maelstrom.lookup import import LookUp
 
-   	#ip1 and ip2 are IP address of some, but not necessarily all, nodes of your Cassandra cluster. 
+    #ip1 and ip2 are IP address of some, but not necessarily all, nodes of your Cassandra cluster. 
     maelstrom.start([ip1, ip2])
     
     class User(Base):
@@ -43,10 +43,10 @@ Example usage of Maelstrom:
       def __init__(self, *args, **kwargs):
         self.update_data(**self.defaults)
         Base.__init__(self, *arks, **kwargs)
-        
-	  #constructs table in the specified keyspace
-	  User.build()         
-  	LookUp.build()
+
+    #constructs table in the specified keyspace
+    User.build()         
+    LookUp.build()
 
     new_user = User(name = "Joe", email="example@email.com")
     new_user.commit()
