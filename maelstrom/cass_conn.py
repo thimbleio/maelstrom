@@ -32,7 +32,9 @@ class TransactionManager:
     
     def __init__(self, connector):
         self.connector = connector
-        for i in range(cpu_count() - 1):
+        num_sessions = cpu_count() - 1 if cpu_count() > 1 else 1
+        print num_sessions, cpu_count()
+        for i in range(num_sessions):
             session = self.connector.cluster.connect(self.connector.kp)
             session.row_factory = dict_factory
             self.sessions.append(session)

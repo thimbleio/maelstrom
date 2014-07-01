@@ -38,4 +38,5 @@ echo "deb http://debian.datastax.com/community stable main" | sudo tee -a /etc/a
 apt-get install -y curl
 apt-get update
 apt-get install -y --force-yes dsc20
-
+deactivate
+cqlsh -e "create keyspace test WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 3 };"
