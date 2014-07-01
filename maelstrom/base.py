@@ -26,7 +26,7 @@ class Base(Row):
 
     @classmethod
     def get_by_lookup(cls, string):
-        from gf.lib.db.lookup import LookUp
+        from .lookup import LookUp
         base = None
         try:
             base = LookUp.get_by_id(string)            

@@ -4,7 +4,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "cass1" do |cass1|
     cass1.vm.box = "hashicorp/precise32"
-	cass1.vm.network :forwarded_port, host: 9160, guest: 9160
+    config.vm.network "public_network"
   end
 =begin
   config.vm.define "cass2" do |cass2|
