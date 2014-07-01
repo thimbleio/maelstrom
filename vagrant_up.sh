@@ -32,11 +32,12 @@ echo 'export NOSE_REDNOSE=1' >> /home/vagrant/.bashrc
 apt-get install -y openjdk-7-jre 
 apt-get install -y openjdk-7-jdk
 
+deactivate
 
 #Install Cassandra.... Let's hope this works...
 echo "deb http://debian.datastax.com/community stable main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list
 apt-get install -y curl
 apt-get update
 apt-get install -y --force-yes dsc20
-deactivate
+cassandra --host 127.0.0.1 -port 9160 
 cqlsh -e "create keyspace test WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 3 };"

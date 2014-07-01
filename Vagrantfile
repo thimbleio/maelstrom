@@ -1,10 +1,10 @@
 Vagrant.configure("2") do |config|
-  config.vm.provision "shell", :path => "./vagrant_up.sh"
   config.vm.box = "hashicorp/precise32"
+  config.vm.provision "shell", :path => "./vagrant_up.sh"
 
   config.vm.define "cass1" do |cass1|
     cass1.vm.box = "hashicorp/precise32"
-    config.vm.network "public_network"
+    config.vm.network "forwarded_port", guest: 9160, host: 9160
   end
 =begin
   config.vm.define "cass2" do |cass2|
