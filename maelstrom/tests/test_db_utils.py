@@ -19,10 +19,9 @@ class DBUnitTests(CassandraTestCase):
     def setUp(self):
         self.ids_used = []
         CassandraTestCase.setUp(self, ['127.0.0.1'], 'test')
-        Account.rebuild()
-        Search.rebuild()
-        LookUp.rebuild()
-        Data.rebuild()
+        #Search.rebuild()
+        #LookUp.rebuild()
+        #Data.rebuild()
         #c.start(['192.241.181.163', '107.170.88.98'], 'gradfly')
         '''
         try:
