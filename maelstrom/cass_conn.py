@@ -4,7 +4,6 @@ from cassandra.decoder import dict_factory
 
 
 class CassandraConnection(object):
-
     ip = None
     kp = None
 
@@ -28,16 +27,16 @@ class CassandraConnection(object):
 
 
 class TransactionManager:
-    sessions = [] 
-    
+    sessions = []
+
     def __init__(self, connector):
         self.connector = connector
-        for i in range(cpu_count() - 1):
+        for i in range(cpu_count()-1):
             session = self.connector.cluster.connect(self.connector.kp)
             session.row_factory = dict_factory
             self.sessions.append(session)
         print self.sessions
-    
+
 
     def execute(self, *args, **kwargs):
         current_session = self.sessions.pop(0)
