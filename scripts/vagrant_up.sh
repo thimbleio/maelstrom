@@ -20,7 +20,7 @@ virtualenv /vagrant/venv
 source /vagrant/venv/bin/activate
 
 pip install --upgrade setuptools
-pip install -r /vagrant/requirements.txt
+pip install -r /vagrant/scripts/requirements.txt
 
 #C extensions for Cassandra
 apt-get install -y libev4 libev-dev
