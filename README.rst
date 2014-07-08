@@ -61,6 +61,6 @@ TODO
 
 License
 -------
-Copyright 2014 Matt Morse, Joe Peacock and contributors
+Copyright 2014 Matt Morse, Joe Peacock and contributors.
 
 Maelstrom is licensed under the `MIT License <https://github.com/gradfly/maelstrom/README.rst/>`_. 
