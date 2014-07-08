@@ -6,8 +6,7 @@ import cassandra
 from uuid import uuid4
 from itertools import izip
 
-CASSANDRA_KEYSPACE = 'gradfly'
-CASSANDRA_IP = ['192.241.181.163', '107.170.88.98']
+
 
 class Search(Base):
     __tablename__ = "search"
@@ -26,11 +25,11 @@ class Search(Base):
 
     @staticmethod
     def _build(__tablename__):
-        build = "create table "+CASSANDRA_KEYSPACE+"."+__tablename__
+        build = "create table "+db.cass_keyspace+"."+__tablename__
         build += " ( id varchar PRIMARY KEY, model_type varchar, model_ids set<uuid> ) with caching = \'all\'"
         db.c.session.execute(build)
         db.c.session.execute("create index model_type on "
-                +CASSANDRA_KEYSPACE+"."+__tablename__+" (model_type)")
+                +db.cass_keyspace+"."+__tablename__+" (model_type)")
 
     @classmethod
     def build(cls):
@@ -50,7 +49,7 @@ class Search(Base):
 
     @staticmethod
     def _build_insert_query(__tablename__, id, **kwargs):
-        query = "update "+CASSANDRA_KEYSPACE+"."+__tablename__
+        query = "update "+db.cass_keyspace+"."+__tablename__
         query += " set model_type=\'"+kwargs['model_type']+"\'"
         query += ", model_ids = model_ids + { "
         for model_id in kwargs['model_ids']:
@@ -62,7 +61,7 @@ class Search(Base):
     def _set_row(__tablename__, id, **kwargs):
         query = _build_insert_query(__tablename__, id, **kwargs)
         return db.c.session.execute(
-            SimpleStatement(query, consistency_level=ConsistencyLevel.QUORUM))
+            SimpleStatement(query))#, consistency_level=ConsistencyLevel.QUORUM))
 
     @staticmethod
     def _set_rows(__tablename__, ids, rows):
@@ -75,7 +74,7 @@ class Search(Base):
         batch += "apply batch"
         try:
             db.c.session.execute(
-                SimpleStatement(batch, consistency_level=ConsistencyLevel.QUORUM)
+                SimpleStatement(batch)# consistency_level=ConsistencyLevel.QUORUM)
             )
         except cassandra.InvalidRequest:
             print "ColumnFamilyError: no such column family exists."

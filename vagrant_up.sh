@@ -41,3 +41,4 @@ apt-get update
 apt-get install -y --force-yes dsc20
 cassandra
 cqlsh -e "create keyspace test WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 3 };"
+

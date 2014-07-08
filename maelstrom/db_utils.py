@@ -101,8 +101,8 @@ def drop_column_family(cf_name):
 
 
 def get_row_by_id(cf_name, row_id):
-    query = SimpleStatement('select * from '+cf_name+' where id = %s',
-                            consistency_level=cassandra.ConsistencyLevel.QUORUM)
+    query = SimpleStatement('select * from '+cf_name+' where id = %s')
+                            #consistency_level=cassandra.ConsistencyLevel.QUORUM)
     try:
         print 'select * from '+cf_name+' where id =', row_id
         return c.session.execute(query, [row_id]).result()[0]
@@ -119,7 +119,7 @@ def get_rows_by_id(cf_name, row_ids):
     query = query[:-1]+")"
     try:
         return c.session.execute(
-            SimpleStatement(query, consistency_level=ConsistencyLevel.QUORUM)).result()
+            SimpleStatement(query)).result() #, consistency_level=ConsistencyLevel.QUORUM
     except InvalidRequest:
         raise NoSuchColumnFamilyException(cf_name)
     except IndexError:
@@ -155,7 +155,7 @@ def insert_row_data(cf_name, unique_id, **kwargs):
     query = build_insert_query(cf_name, unique_id, **kwargs)
     try:
         return c.session.execute(
-            SimpleStatement(query, consistency_level=ConsistencyLevel.QUORUM)).result()
+            SimpleStatement(query)).result() #, consistency_level=ConsistencyLevel.QUORUM)
     except InvalidRequest:
         print "ColumnFamilyError: no such column family exists."
     except InvalidRequest:
@@ -170,7 +170,7 @@ def set_rows_data(cf_name, unique_ids, list_of_rows):
     batch += "apply batch"
     try:
         c.session.execute(
-            SimpleStatement(batch, consistency_level=ConsistencyLevel.QUORUM)
+            SimpleStatement(batch) #, consistency_level=ConsistencyLevel.QUORUM
         ).result()
     except InvalidRequest:
         raise NoSuchColumnFamilyException(cf_name)
@@ -183,8 +183,7 @@ def get_row_spec_prop(cf_name, unique_id, cols):
     query = query[:-2]+" where id=%s", (unique_id)
     try:
         return c.session.execute(
-            SimpleStatement(query,
-                            consistency_level=cassandra.ConsistencyLevel.QUORUM))[0]
+            SimpleStatement(query,))[0] #consistency_level=cassandra.ConsistencyLevel.QUORUM
     except cassandra.InvalidRequest:
         raise NoSuchColumnFamilyException(cf_name)
     except IndexError:
@@ -195,8 +194,7 @@ def delete_row(cf_name, unique_id):
     query = "delete from "+cf_name+" where id="+str(unique_id)
     try:
         c.session.execute(
-            SimpleStatement(query,
-                            consistency_level=cassandra.ConsistencyLevel.QUORUM)
+            SimpleStatement(query) #,consistency_level=cassandra.ConsistencyLevel.QUORUM
         )
     except cassandra.InvalidRequest:
         raise NoSuchColumnFamilyException(cf_name)
@@ -211,9 +209,9 @@ def delete_rows(cf_name, unique_ids):
     batch += "apply batch"
     try:
         c.session.execute(
-            SimpleStatement(batch,
-                            consistency_level=cassandra.ConsistencyLevel.QUORUM)
+            SimpleStatement(batch)
         )
+        #,  consistency_level=cassandra.ConsistencyLevel.QUORUM
     except cassandra.InvalidRequest:
         raise NoSuchColumnFamilyException(cf_name)
     except IndexError:
