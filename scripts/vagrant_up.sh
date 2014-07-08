@@ -33,7 +33,18 @@ echo 'export NOSE_REDNOSE=1' >> /home/vagrant/.bashrc
 
 deactivate
 
-#Install Cassandra.... Let's hope this works...
-echo "deb http://debian.datastax.com/community stable main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list
+cd ~/temp
+wget http://www.us.apache.org/dist/cassandra/2.0.6/apache-cassandra-2.0.6-bin.tar.gz
+tar -xvzf apache-cassandra-2.0.6-bin.tar.gz
+mv apache-cassandra-2.0.6 ~/cassandra
+
+sudo mkdir /var/lib/cassandra
+sudo mkdir /var/log/cassandra
+sudo chown -R $USER:$GROUP /var/lib/cassandra
+sudo chown -R $USER:$GROUP /var/log/cassandra
+
+export CASSANDRA_HOME=~/cassandra
+export PATH=$PATH:$CASSANDRA_HOME/bin
 cassandra
-cqlsh -e "create keyspace test WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 3 };"
+
+sh cqlsh -e "create keyspace test WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 3 };"
