@@ -20,8 +20,8 @@ Example usage of Maelstrom:
 
 .. code-block:: python
 
-    from uuid import uuid4
     import maelstrom
+    from uuid import uuid4
     from maelstrom.base import Base
     from maelstrom.lookup import import LookUp
 
@@ -46,12 +46,12 @@ Example usage of Maelstrom:
 
     #constructs table in the specified keyspace
     User.build()         
-    LookUp.build()
 
-    new_user = User(name = "Joe", email="example@email.com")
-    new_user.commit()
-    
-    get_user = Account.get_by_lookup("example@email.com")
+    User(name = "Joe", email="example@email.com").commit()
+    user = User.get_by_lookup("example@email.com")
+
+    # "Joe"
+    print user.name
     
     maelstrom.stop()
 
@@ -61,6 +61,6 @@ TODO
 
 License
 -------
-Copyright 2014 Matt Morse, Joe Peacock and contributors
+Copyright 2014 Matt Morse, Joe Peacock and contributors.
 
 Maelstrom is licensed under the `MIT License <https://github.com/gradfly/maelstrom/README.rst/>`_. 

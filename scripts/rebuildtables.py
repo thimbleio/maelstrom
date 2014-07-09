@@ -1,19 +1,21 @@
+from maelstrom.tests.account import Account
 from maelstrom.data import Data
 from maelstrom.lookup import LookUp
 from maelstrom.search import Search
-from maelstrom.tests.account import Account
 import maelstrom
 from time import sleep
 
-maelstrom.start(['localhost'],'test')
+maelstrom.start(['127.0.0.1'],'test')
 
-print 'rebuilding users...'
-Account.rebuild()
-print 'rebuilding data...'
-Data.rebuild()
 print 'rebuilding lookup table...'
 LookUp.rebuild()
+sleep(3)
+print 'rebuilding users...'
+Account.rebuild()
+sleep(3)
+print 'rebuilding data...'
+Data.rebuild()
+sleep(3)
 print 'rebuilding search table...'
 Search.rebuild()
-
-maelstrom.stop()
+sleep(3)
