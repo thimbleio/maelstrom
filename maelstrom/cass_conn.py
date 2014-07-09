@@ -12,7 +12,7 @@ class CassandraConnection(object):
         self.kp = cass_kp
         try:
             #self.cluster = Cluster(contact_points=self.ip, control_connection_timeout=10000.0)
-            self.cluster = Cluster(contact_points=self.ip)
+            self.cluster = Cluster(contact_points=self.ip, control_connection_timeout=10000.0)
             #self.session = self.cluster.connect(self.kp)
             self.session = TransactionManager(self)
             self.session.row_factory = dict_factory
@@ -31,7 +31,8 @@ class TransactionManager:
 
     def __init__(self, connector):
         self.connector = connector
-        for i in range(cpu_count()-1):
+        num_sessions = cpu_count() - 1 if cpu_count() > 1 else 1
+        for i in range(num_sessions):
             session = self.connector.cluster.connect(self.connector.kp)
             session.row_factory = dict_factory
             self.sessions.append(session)

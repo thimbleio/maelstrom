@@ -40,4 +40,4 @@ apt-get install -y curl
 apt-get update
 apt-get install -y --force-yes dsc20
 cassandra
-cqlsh -e "create keyspace test WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 3 };"
+echo "cqlsh -e \"create keyspace test WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };\"" >> /home/vagrant/.bashrc

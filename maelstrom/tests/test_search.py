@@ -1,6 +1,8 @@
 from uuid import uuid4
 from maelstrom.search import Search
-from account import Account
+from maelstrom.tests.account import Account
+from maelstrom.lookup import LookUp
+from maelstrom.data import Data
 from test import CassandraTestCase
 
 
@@ -10,9 +12,10 @@ class SearchUnitTests(CassandraTestCase):
 
     def setUp(self):
         #CassandraTestCase.setUp(self, ['192.241.181.163', '107.170.88.98'], 'gradfly')
-        CassandraTestCase.setUp(self, ['127.0.0.1:9160'], 'test')
-        Account.rebuild()
-        Search.rebuild()
+        CassandraTestCase.setUp(self, ['localhost'], 'test')
+        #Account.rebuild()
+        #Search.rebuild()
+        #LookUp.rebuild()
         #c.start(['192.241.181.163', '107.170.88.98'], 'gradfly')
         '''
         try:

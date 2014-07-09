@@ -23,7 +23,7 @@ Example usage of Maelstrom:
     from uuid import uuid4
     import maelstrom
     from maelstrom.base import Base
-	  from maelstrom.lookup import import LookUp
+    from maelstrom.lookup import import LookUp
 
     #ip1 and ip2 are IP address of some, but not necessarily all, nodes of your Cassandra cluster. 
     maelstrom.start([ip1, ip2])
