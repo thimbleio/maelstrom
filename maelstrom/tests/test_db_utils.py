@@ -15,7 +15,6 @@ class DBUnitTests(CassandraTestCase):
     """
     test_setup = False
 
-
     def setUp(self):
         self.ids_used = []
         CassandraTestCase.setUp(self, ['127.0.0.1'], 'test')
@@ -23,23 +22,22 @@ class DBUnitTests(CassandraTestCase):
         #LookUp.rebuild()
         #Data.rebuild()
         #c.start(['192.241.181.163', '107.170.88.98'], 'gradfly')
-        '''
-        try:
-            c.start(['192.241.181.163', '107.170.88.98'], 'gradfly')
-        except Exception:
-            from time import sleep
-            print 'failed'
-            sleep(50000)
-        finally:
-            c.start(['192.241.181.163', '107.170.88.98'], 'gradfly')
-        '''
+        # try:
+        #     c.start(['192.241.181.163', '107.170.88.98'], 'gradfly')
+        # except Exception:
+        #     from time import sleep
+        #     print 'failed'
+        #     sleep(50000)
+        # finally:
+        #     c.start(['192.241.181.163', '107.170.88.98'], 'gradfly')
+
     def test_get_and_put_by_id(self):
         init_id = uuid4()
         self.ids_used.append(init_id)
         data = Data(id=init_id, contents="john ")
         data.commit()
         test_data = Data.get_by_id(init_id)
-        #for i,j in zip(user_1.__dict__.values(), test_user_1.__dict__.values()):
+        # for i,j in zip(user_1.__dict__.values(), test_user_1.__dict__.values()):
         #	print i,j, i == j
         self.assertEqual(data, test_data)
 

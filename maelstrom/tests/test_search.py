@@ -12,7 +12,7 @@ class SearchUnitTests(CassandraTestCase):
 
     def setUp(self):
         #CassandraTestCase.setUp(self, ['192.241.181.163', '107.170.88.98'], 'gradfly')
-        CassandraTestCase.setUp(self, ['127.0.0.1'], 'test')
+        CassandraTestCase.setUp(self, ['localhost'], 'test')
         #Account.rebuild()
         #Search.rebuild()
         #LookUp.rebuild()

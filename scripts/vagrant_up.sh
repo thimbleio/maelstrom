@@ -28,6 +28,7 @@ source /vagrant/venv/bin/activate
 pip install --upgrade setuptools
 pip install -r /vagrant/scripts/requirements.txt
 easy_install rednose
+echo 'export NOSE_REDNOSE=1' >> /home/vagrant/.bashrc
 deactivate -d
 
 su vagrant

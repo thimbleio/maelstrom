@@ -1,9 +1,9 @@
 import db_utils as db
 
 
-def start(cass_ip, cass_kp):
+def connect(cass_ip, cass_kp):
     db.connect(cass_ip, cass_kp)
 
 
-def stop():
+def close():
     db.close()
