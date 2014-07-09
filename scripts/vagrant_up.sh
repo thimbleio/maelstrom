@@ -23,28 +23,26 @@ apt-get update
 
 pip install virtualenv
 virtualenv /vagrant/venv
-source /vagrant/venv/bin/activate
 
+source /vagrant/venv/bin/activate
 pip install --upgrade setuptools
 pip install -r /vagrant/scripts/requirements.txt
-
 easy_install rednose
-echo 'export NOSE_REDNOSE=1' >> /home/vagrant/.bashrc
+deactivate -d
 
-deactivate
+su vagrant
 
-cd ~/temp
-wget http://www.us.apache.org/dist/cassandra/2.0.6/apache-cassandra-2.0.6-bin.tar.gz
-tar -xvzf apache-cassandra-2.0.6-bin.tar.gz
-mv apache-cassandra-2.0.6 ~/cassandra
+mkdir ~/temp
+cd ~temp
+
+sudo wget http://apache.tradebit.com/pub/~/2.0.9/apache-cassandra-2.0.9-bin.tar.gz
+sudo tar -xvzf apache-cassandra-2.0.9-bin.tar.gz
+sudo mv apache-cassandra-2.0.9 ~/cassandra
 
 sudo mkdir /var/lib/cassandra
 sudo mkdir /var/log/cassandra
 sudo chown -R $USER:$GROUP /var/lib/cassandra
 sudo chown -R $USER:$GROUP /var/log/cassandra
 
-export CASSANDRA_HOME=~/cassandra
-export PATH=$PATH:$CASSANDRA_HOME/bin
 cassandra
-
-sh cqlsh -e "create keyspace test WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 3 };"
+cqlsh -e "create keyspace test WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 3 };"
