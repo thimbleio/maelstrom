@@ -10,8 +10,3 @@ class TestConnection(unittest.TestCase):
     local_port = "9160"
     test_keyspace = "test"
 
-    def test_connection(self):
-        maelstrom.db_utils.connect([self.local_ip], self.test_keyspace)
-
-    def test_close(self):
-        maelstrom.close()

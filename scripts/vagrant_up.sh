@@ -31,19 +31,23 @@ easy_install rednose
 echo 'export NOSE_REDNOSE=1' >> /home/vagrant/.bashrc
 deactivate -d
 
-su vagrant
-
-mkdir ~/temp
-cd ~temp
-
-sudo wget http://apache.tradebit.com/pub/~/2.0.9/apache-cassandra-2.0.9-bin.tar.gz
-sudo tar -xvzf apache-cassandra-2.0.9-bin.tar.gz
-sudo mv apache-cassandra-2.0.9 ~/cassandra
+mkdir /home/vagrant/temp
 
 sudo mkdir /var/lib/cassandra
 sudo mkdir /var/log/cassandra
-sudo chown -R $USER:$GROUP /var/lib/cassandra
-sudo chown -R $USER:$GROUP /var/log/cassandra
+sudo chown -R vagrant /var/lib/cassandra
+sudo chown -R vagrant /var/log/cassandra
 
-cassandra
-cqlsh -e "create keyspace test WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 3 };"
+sudo wget -O /home/vagrant/temp/apache-cassandra-2.0.9-bin.tar.gz http://psg.mtu.edu/pub/apache/cassandra/2.0.9/apache-cassandra-2.0.9-bin.tar.gz
+sudo tar -xvzf /home/vagrant/temp/apache-cassandra-2.0.9-bin.tar.gz -C /home/vagrant/temp
+sudo mv /home/vagrant/temp/apache-cassandra-2.0.9 /home/vagrant/cassandra
+
+echo 'export CASSANDRA_HOME=/home/vagrant/cassandra' >> /home/vagrant/.bashrc
+echo 'export PATH=$PATH:$CASSANDRA_HOME/bin' >> /home/vagrant/.bashrc
+
+sh /home/vagrant/cassandra/bin/cassandra
+
+echo "Waiting for Cassandra to start.."
+sleep 10
+
+sh /home/vagrant/cassandra/bin/cqlsh -e "create keyspace test WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 3 };"

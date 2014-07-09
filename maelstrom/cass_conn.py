@@ -1,9 +1,9 @@
-from multiprocessing import cpu_count
 from cassandra.cluster import Cluster, NoHostAvailable
 from cassandra.decoder import dict_factory
 
 
 class CassandraConnection(object):
+
     ip = None
     kp = None
 
@@ -11,9 +11,8 @@ class CassandraConnection(object):
         self.ip = cass_ip
         self.kp = cass_kp
         try:
-            # self.cluster = Cluster(contact_points=self.ip, control_connection_timeout=10000.0)
-            self.cluster = Cluster(contact_points=self.ip, control_connection_timeout=10000.0)
-            # self.session = self.cluster.connect(self.kp)
+            self.cluster = Cluster(contact_points=self.ip,
+                                   control_connection_timeout=10000.0)
             self.session = TransactionManager(self)
             self.session.row_factory = dict_factory
         except NoHostAvailable:
@@ -27,17 +26,17 @@ class CassandraConnection(object):
 
 
 class TransactionManager:
+
     sessions = []
 
     def __init__(self, connector):
         self.connector = connector
-        num_sessions = cpu_count() - 1 if cpu_count() > 1 else 1
+        num_sessions = 1  # cpu_count() - 1 if cpu_count() > 1 else 1
         for i in range(num_sessions):
             session = self.connector.cluster.connect(self.connector.kp)
             session.row_factory = dict_factory
             self.sessions.append(session)
         print self.sessions
-
 
     def execute(self, *args, **kwargs):
         current_session = self.sessions.pop(0)
